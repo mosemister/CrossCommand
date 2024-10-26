@@ -1,0 +1,4 @@
+rootProject.name = 'CrossCommand'
+include 'Brig'
+include 'Api'
+
