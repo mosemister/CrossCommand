@@ -5,10 +5,15 @@ import org.cross.command.api.execution.CommandExecutor;
 import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public interface CrossCommandBuilder {
+
+    @NotNull
+    @CheckReturnValue
+    CrossCommand build();
 
     interface Executable extends CrossCommandBuilder {
 
@@ -22,19 +27,20 @@ public interface CrossCommandBuilder {
 
         @NotNull
         @CheckReturnValue
-        CrossCommandBuilder addArgument();
+        CrossCommandBuilder addArgument(@NotNull CommandArgumentBuilder argument, @NotNull String name, @NotNull Collection<String> alias);
+
+        @NotNull
+        @CheckReturnValue
+        default CrossCommandBuilder addArgument(@NotNull CommandArgumentBuilder argument, @NotNull String name, @NotNull String... alias) {
+            return addArgument(argument, name, List.of(alias));
+        }
     }
 
-    interface Base extends CrossCommandBuilder {
+
+    interface Base {
 
         @NotNull
         @CheckReturnValue
         Executable executable();
     }
-
-
-
-    @NotNull
-    @CheckReturnValue
-    CrossCommand build();
 }

@@ -11,5 +11,30 @@ public interface ArgumentContext {
     @CheckReturnValue
     Map<String, Object> results();
 
+    @CheckReturnValue
+    int index();
+
+    @CheckReturnValue
+    @NotNull
+    String raw();
+
+    @CheckReturnValue
+    @NotNull
+    String parseString();
+
+    @CheckReturnValue
+    int parseInteger();
+
+    @CheckReturnValue
+    @NotNull
+    String singleString();
+
+    @CheckReturnValue
+    @NotNull
+    String quotedString();
+
+    @CheckReturnValue
+    @NotNull
+    String remainingStrings();
 
 }

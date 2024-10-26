@@ -8,16 +8,16 @@ version = '1.0.0'
 repositories {
     mavenCentral()
     maven {
-        url "https://libraries.minecraft.net"
-    }
-    maven {
         name = 'papermc'
         url = 'https://repo.papermc.io/repository/maven-public/'
     }
 }
 
 dependencies {
-    implementation "net.kyori:adventure-api:4.17.0"
+    implementation project(":Api")
+    implementation project(":Brig")
+
+    implementation "io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT"
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

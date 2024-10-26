@@ -2,6 +2,7 @@ package org.cross.command.api.argument;
 
 import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface CommandArgumentBuilder {
 
@@ -9,35 +10,68 @@ public interface CommandArgumentBuilder {
     @CheckReturnValue
     CommandArgument<?> build();
 
+    @CheckReturnValue
     boolean isOptional();
 
     @NotNull
     @CheckReturnValue
     CommandArgumentBuilder setOptional(boolean optional);
 
+    interface Number<This extends Number<This, N>, N extends java.lang.Number> extends CommandArgumentBuilder {
 
+        This setMax(@Nullable N max);
 
-    interface Integer extends CommandArgumentBuilder {
+        N max();
 
-        Integer max(int max);
+        This setMin(@Nullable N min);
 
-        Integer min(int min);
+        N min();
 
         @Override
         @NotNull
-        CommandArgument<java.lang.Integer> build();
+        CommandArgument<N> build();
+
     }
 
+    interface Integer extends Number<Integer, java.lang.Integer> {
+    }
 
-    interface Double extends CommandArgumentBuilder {
+    interface Long extends Number<Long, java.lang.Long> {
 
-        Integer max(double max);
+    }
 
-        Integer min(double min);
+    interface Float extends Number<Float, java.lang.Float> {
+
+    }
+
+    interface Double extends Number<Double, java.lang.Double> {
+    }
+
+    interface Boolean extends CommandArgumentBuilder {
 
         @Override
         @NotNull
-        CommandArgument<java.lang.Double> build();
+        CommandArgument<java.lang.Boolean> build();
+
+    }
+
+    interface String extends CommandArgumentBuilder {
+        @CheckReturnValue
+        @NotNull
+        String setConsumer(@NotNull StringConsumer consumer);
+
+        @CheckReturnValue
+        @NotNull
+        StringConsumer consumer();
+
+        @Override
+        @NotNull CommandArgument<java.lang.String> build();
+
+        enum StringConsumer {
+            WORD,
+            QUOTE,
+            REMAINING
+        }
     }
 
     interface Custom extends CommandArgumentBuilder {
@@ -53,8 +87,26 @@ public interface CommandArgumentBuilder {
 
         @CheckReturnValue
         @NotNull
+        Long longType();
+
+        @CheckReturnValue
+        @NotNull
+        Float floatType();
+
+        @CheckReturnValue
+        @NotNull
         Double doubleType();
 
+        @CheckReturnValue
+        @NotNull
+        Boolean booleanType();
+
+        @CheckReturnValue
+        @NotNull
         Custom customType();
+
+        @NotNull
+        @CheckReturnValue
+        String stringType();
     }
 }

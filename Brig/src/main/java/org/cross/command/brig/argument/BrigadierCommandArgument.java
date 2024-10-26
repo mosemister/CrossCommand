@@ -5,6 +5,6 @@ import org.cross.command.api.argument.CommandArgument;
 
 public interface BrigadierCommandArgument<Src, Result> extends CommandArgument<Result> {
 
-    <Builder extends ArgumentBuilder<Src, Builder>> ArgumentBuilder<Src, Builder> buildBrigadier(String key);
+    ArgumentBuilder<Src, ? extends ArgumentBuilder<Src, ?>> buildBrigadier(String key);
 
 }
