@@ -3,12 +3,12 @@ package org.cross.command.paper;
 import com.mojang.brigadier.CommandDispatcher;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.command.CommandSender;
 import org.cross.command.brig.BrigadierCrossCommandManager;
 import org.cross.command.paper.argument.PaperArgumentBuilder;
-import org.cross.command.paper.source.GenericCommandSource;
 import org.jetbrains.annotations.NotNull;
 
-public class PaperCrossCommandManager extends BrigadierCrossCommandManager<CommandSourceStack, CommandSource, PaperBaseCommandBuilder, PaperArgumentBuilder> {
+public class PaperCrossCommandManager extends BrigadierCrossCommandManager<CommandSourceStack, CommandSender, PaperBaseCommandBuilder, PaperArgumentBuilder> {
 
     private final @NotNull Commands paperCommands;
 
@@ -22,13 +22,8 @@ public class PaperCrossCommandManager extends BrigadierCrossCommandManager<Comma
     }
 
     @Override
-    protected CommandSource toSource(CommandSourceStack source) {
-        return new GenericCommandSource(this::transformManager, source.getSender());
-    }
-
-    @Override
     public @NotNull PaperBaseCommandBuilder commandBuilder() {
-        return new PaperBaseCommandBuilder();
+        return new PaperBaseCommandBuilder(this);
     }
 
     @Override

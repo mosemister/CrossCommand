@@ -11,6 +11,6 @@ public interface BaseCrossCommandBuilder<CommandSrc, Permissible> extends CrossC
 
     @Override
     default @NotNull ExecutableCommandBuilder<CommandSrc, Permissible> executable() {
-        return new ExecutableCommandBuilder<>();
+        return new ExecutableCommandBuilder<>(manager());
     }
 }

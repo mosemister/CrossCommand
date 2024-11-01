@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'org.cross.command'
+group = 'org.cross.command.brig'
 version = '1.0-SNAPSHOT'
 
 repositories {

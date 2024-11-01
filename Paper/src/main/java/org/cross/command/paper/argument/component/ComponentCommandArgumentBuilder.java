@@ -2,8 +2,10 @@ package org.cross.command.paper.argument.component;
 
 import org.cross.command.api.argument.CommandArgumentBuilder;
 import org.jetbrains.annotations.NotNull;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import org.bukkit.command.CommandSender;
 
-public class ComponentCommandArgumentBuilder implements CommandArgumentBuilder {
+public class ComponentCommandArgumentBuilder implements CommandArgumentBuilder<CommandSourceStack, CommandSender> {
 
     private boolean isOptional;
 
@@ -18,7 +20,7 @@ public class ComponentCommandArgumentBuilder implements CommandArgumentBuilder {
     }
 
     @Override
-    public @NotNull CommandArgumentBuilder setOptional(boolean optional) {
+    public @NotNull ComponentCommandArgumentBuilder setOptional(boolean optional) {
         this.isOptional = optional;
         return this;
     }

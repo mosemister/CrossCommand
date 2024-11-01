@@ -27,7 +27,7 @@ public class TransformManager {
     public <From extends Transformable, To> To get(From from, Class<To> to) throws TransformException {
         try {
             var map = this.transform.get(from);
-            Transform<From, To> transform = (Transform<From, To>) map.get(to.getName());
+            @SuppressWarnings("unchecked") Transform<From, To> transform = (Transform<From, To>) map.get(to.getName());
             return transform.transform(from);
         } catch (IllegalArgumentException ex) {
             throw new TransformException(from.getClass(), to);
