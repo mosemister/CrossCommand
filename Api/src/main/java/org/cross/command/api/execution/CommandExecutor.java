@@ -2,7 +2,7 @@ package org.cross.command.api.execution;
 
 import org.cross.command.api.execution.exception.CommandException;
 
-public interface CommandExecutor {
+public interface CommandExecutor<CommandSrc, Permissible> {
 
-    void execute(CommandContextImmutable context) throws CommandException, Throwable;
+    void execute(CommandContextImmutable<CommandSrc, Permissible> context) throws CommandException, Throwable;
 }

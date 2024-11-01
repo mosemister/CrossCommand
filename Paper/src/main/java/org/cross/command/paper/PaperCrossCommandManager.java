@@ -3,13 +3,12 @@ package org.cross.command.paper;
 import com.mojang.brigadier.CommandDispatcher;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.cross.command.api.source.CommandSource;
 import org.cross.command.brig.BrigadierCrossCommandManager;
 import org.cross.command.paper.argument.PaperArgumentBuilder;
 import org.cross.command.paper.source.GenericCommandSource;
 import org.jetbrains.annotations.NotNull;
 
-public class PaperCrossCommandManager extends BrigadierCrossCommandManager<CommandSourceStack, PaperBaseCommandBuilder, PaperArgumentBuilder> {
+public class PaperCrossCommandManager extends BrigadierCrossCommandManager<CommandSourceStack, CommandSource, PaperBaseCommandBuilder, PaperArgumentBuilder> {
 
     private final @NotNull Commands paperCommands;
 

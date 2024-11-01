@@ -9,41 +9,41 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public interface CrossCommandBuilder {
+public interface CrossCommandBuilder<CommandSrc, Permissible> {
 
     @NotNull
     @CheckReturnValue
-    CrossCommand build();
+    CrossCommand<CommandSrc, Permissible> build();
 
-    interface Executable extends CrossCommandBuilder {
-
-        @NotNull
-        @CheckReturnValue
-        CrossCommandBuilder setExecutor(@NotNull CommandExecutor executor);
-
-        @CheckReturnValue
-        CommandExecutor executor();
+    interface Executable<CommandSrc, Permissible> extends CrossCommandBuilder<CommandSrc, Permissible> {
 
         @NotNull
         @CheckReturnValue
-        List<Map.Entry<List<String>, CommandArgumentBuilder>> arguments();
+        Executable<CommandSrc, Permissible> setExecutor(@NotNull CommandExecutor<CommandSrc, Permissible> executor);
+
+        @CheckReturnValue
+        CommandExecutor<CommandSrc, Permissible> executor();
 
         @NotNull
         @CheckReturnValue
-        CrossCommandBuilder addArgument(@NotNull CommandArgumentBuilder argument, @NotNull String name, @NotNull Collection<String> alias);
+        List<Map.Entry<List<String>, CommandArgumentBuilder<CommandSrc, Permissible>>> arguments();
 
         @NotNull
         @CheckReturnValue
-        default CrossCommandBuilder addArgument(@NotNull CommandArgumentBuilder argument, @NotNull String name, @NotNull String... alias) {
+        CrossCommandBuilder<CommandSrc, Permissible> addArgument(@NotNull CommandArgumentBuilder<CommandSrc, Permissible> argument, @NotNull String name, @NotNull Collection<String> alias);
+
+        @NotNull
+        @CheckReturnValue
+        default CrossCommandBuilder<CommandSrc, Permissible> addArgument(@NotNull CommandArgumentBuilder<CommandSrc, Permissible> argument, @NotNull String name, @NotNull String... alias) {
             return addArgument(argument, name, List.of(alias));
         }
     }
 
 
-    interface Base {
+    interface Base<CommandSrc, Permissible> {
 
         @NotNull
         @CheckReturnValue
-        Executable executable();
+        Executable<CommandSrc, Permissible> executable();
     }
 }

@@ -1,11 +1,9 @@
 package org.cross.command.api.execution;
 
 import net.kyori.adventure.audience.Audience;
-import org.cross.command.api.source.CommandSource;
-import org.cross.command.api.source.Permissible;
 import org.jetbrains.annotations.CheckReturnValue;
 
-public interface CommandContext {
+public interface CommandContext<CommandSrc, Permissible> {
 
     @CheckReturnValue
     Permissible permissionHolder();
@@ -14,5 +12,5 @@ public interface CommandContext {
     Audience audience();
 
     @CheckReturnValue
-    CommandSource target();
+    CommandSrc target();
 }

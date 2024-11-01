@@ -9,15 +9,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public interface CommandArgument<Result> {
+public interface CommandArgument<Result, CommandSrc, Permissible> {
 
     @NotNull
     @CheckReturnValue
-    Result process(@NotNull CommandContextMutable commandContext, @NotNull ArgumentContext context) throws ArgumentException;
+    Result process(@NotNull CommandContextMutable<CommandSrc, Permissible> commandContext, @NotNull ArgumentContext context) throws ArgumentException;
 
     @NotNull
     @CheckReturnValue
-    Collection<ArgumentSuggestion> suggest(@NotNull CommandContextImmutable commandContext, @NotNull ArgumentContext context);
+    Collection<ArgumentSuggestion> suggest(@NotNull CommandContextImmutable<CommandSrc, Permissible> commandContext, @NotNull ArgumentContext context);
 
     @NotNull
     @CheckReturnValue

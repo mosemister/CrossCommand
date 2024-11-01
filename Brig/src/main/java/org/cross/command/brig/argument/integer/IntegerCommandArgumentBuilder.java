@@ -6,14 +6,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class IntegerCommandArgumentBuilder<Src> implements CommandArgumentBuilder.Integer {
+public class IntegerCommandArgumentBuilder<CommandSrc, Permissible> implements CommandArgumentBuilder.Integer<CommandSrc, Permissible> {
 
     private boolean isOptional;
     private int max = java.lang.Integer.MAX_VALUE;
     private int min = java.lang.Integer.MIN_VALUE;
 
     @Override
-    public Integer setMax(@Nullable java.lang.Integer max) {
+    public Integer<CommandSrc, Permissible> setMax(@Nullable java.lang.Integer max) {
         this.max = Objects.requireNonNullElse(max, java.lang.Integer.MAX_VALUE);
         return this;
     }
@@ -24,7 +24,7 @@ public class IntegerCommandArgumentBuilder<Src> implements CommandArgumentBuilde
     }
 
     @Override
-    public Integer setMin(java.lang.Integer min) {
+    public Integer<CommandSrc, Permissible> setMin(java.lang.Integer min) {
         this.min = Objects.requireNonNullElse(min, java.lang.Integer.MIN_VALUE);
         return this;
     }
@@ -35,7 +35,7 @@ public class IntegerCommandArgumentBuilder<Src> implements CommandArgumentBuilde
     }
 
     @Override
-    public @NotNull IntegerCommandArgument<Src> build() {
+    public @NotNull IntegerCommandArgument<CommandSrc, Permissible> build() {
         return new IntegerCommandArgument<>(this);
     }
 
@@ -45,7 +45,7 @@ public class IntegerCommandArgumentBuilder<Src> implements CommandArgumentBuilde
     }
 
     @Override
-    public @NotNull CommandArgumentBuilder setOptional(boolean optional) {
+    public @NotNull CommandArgumentBuilder<CommandSrc, Permissible> setOptional(boolean optional) {
         this.isOptional = optional;
         return this;
     }

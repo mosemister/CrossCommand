@@ -4,20 +4,20 @@ import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface CommandArgumentBuilder {
+public interface CommandArgumentBuilder<CommandSrc, Permissible> {
 
     @NotNull
     @CheckReturnValue
-    CommandArgument<?> build();
+    CommandArgument<?, CommandSrc, Permissible> build();
 
     @CheckReturnValue
     boolean isOptional();
 
     @NotNull
     @CheckReturnValue
-    CommandArgumentBuilder setOptional(boolean optional);
+    CommandArgumentBuilder<CommandSrc, Permissible> setOptional(boolean optional);
 
-    interface Number<This extends Number<This, N>, N extends java.lang.Number> extends CommandArgumentBuilder {
+    interface Number<This extends Number<This, N, CommandSrc, Permissible>, N extends java.lang.Number, CommandSrc, Permissible> extends CommandArgumentBuilder<CommandSrc, Permissible> {
 
         This setMax(@Nullable N max);
 
@@ -29,43 +29,44 @@ public interface CommandArgumentBuilder {
 
         @Override
         @NotNull
-        CommandArgument<N> build();
+        CommandArgument<N, CommandSrc, Permissible> build();
 
     }
 
-    interface Integer extends Number<Integer, java.lang.Integer> {
+    interface Integer<CommandSrc, Permissible> extends Number<Integer<CommandSrc, Permissible>, java.lang.Integer, CommandSrc, Permissible> {
     }
 
-    interface Long extends Number<Long, java.lang.Long> {
-
-    }
-
-    interface Float extends Number<Float, java.lang.Float> {
+    interface Long<CommandSrc, Permissible> extends Number<Long<CommandSrc, Permissible>, java.lang.Long, CommandSrc, Permissible> {
 
     }
 
-    interface Double extends Number<Double, java.lang.Double> {
+    interface Float<CommandSrc, Permissible> extends Number<Float<CommandSrc, Permissible>, java.lang.Float, CommandSrc, Permissible> {
+
     }
 
-    interface Boolean extends CommandArgumentBuilder {
+    interface Double<CommandSrc, Permissible> extends Number<Double<CommandSrc, Permissible>, java.lang.Double, CommandSrc, Permissible> {
+    }
+
+    interface Boolean<CommandSrc, Permissible> extends CommandArgumentBuilder<CommandSrc, Permissible> {
 
         @Override
         @NotNull
-        CommandArgument<java.lang.Boolean> build();
+        CommandArgument<java.lang.Boolean, CommandSrc, Permissible> build();
 
     }
 
-    interface String extends CommandArgumentBuilder {
+    interface String<CommandSrc, Permissible> extends CommandArgumentBuilder<CommandSrc, Permissible> {
         @CheckReturnValue
         @NotNull
-        String setConsumer(@NotNull StringConsumer consumer);
+        String<CommandSrc, Permissible> setConsumer(@NotNull StringConsumer consumer);
 
         @CheckReturnValue
         @NotNull
         StringConsumer consumer();
 
         @Override
-        @NotNull CommandArgument<java.lang.String> build();
+        @NotNull
+        CommandArgument<java.lang.String, CommandSrc, Permissible> build();
 
         enum StringConsumer {
             WORD,
@@ -74,39 +75,39 @@ public interface CommandArgumentBuilder {
         }
     }
 
-    interface Custom extends CommandArgumentBuilder {
+    interface Custom<CommandSrc, Permissible> extends CommandArgumentBuilder<CommandSrc, Permissible> {
 
 
     }
 
-    interface Base {
+    interface Base<CommandSrc, Permissible> {
 
         @CheckReturnValue
         @NotNull
-        Integer integerType();
+        Integer<CommandSrc, Permissible> integerType();
 
         @CheckReturnValue
         @NotNull
-        Long longType();
+        Long<CommandSrc, Permissible> longType();
 
         @CheckReturnValue
         @NotNull
-        Float floatType();
+        Float<CommandSrc, Permissible> floatType();
 
         @CheckReturnValue
         @NotNull
-        Double doubleType();
+        Double<CommandSrc, Permissible> doubleType();
 
         @CheckReturnValue
         @NotNull
-        Boolean booleanType();
+        Boolean<CommandSrc, Permissible> booleanType();
 
         @CheckReturnValue
         @NotNull
-        Custom customType();
+        Custom<CommandSrc, Permissible> customType();
 
         @NotNull
         @CheckReturnValue
-        String stringType();
+        String<CommandSrc, Permissible> stringType();
     }
 }

@@ -2,6 +2,4 @@ rootProject.name = 'CrossCommand'
 include 'Brig'
 include 'Api'
 include 'Paper'
-include 'Paper:Test'
-findProject(':Paper:Test')?.name = 'Test'
 

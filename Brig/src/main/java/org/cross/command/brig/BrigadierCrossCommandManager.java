@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import org.cross.command.api.CrossCommand;
 import org.cross.command.api.CrossCommandManager;
-import org.cross.command.api.source.CommandSource;
 import org.cross.command.api.transform.TransformManager;
 import org.cross.command.brig.argument.BaseCommandArgumentBuilder;
 import org.cross.command.brig.command.BaseCrossCommandBuilder;
@@ -15,13 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class BrigadierCrossCommandManager<CommandSrc, CommandBuilder extends BaseCrossCommandBuilder, ArgumentBuilder extends BaseCommandArgumentBuilder<CommandSrc>> implements CrossCommandManager<CommandBuilder, ArgumentBuilder> {
+public abstract class BrigadierCrossCommandManager<CommandSrc, Permissible, CommandBuilder extends BaseCrossCommandBuilder<CommandSrc, Permissible>, ArgumentBuilder extends BaseCommandArgumentBuilder<CommandSrc, Permissible>> implements CrossCommandManager<CommandSrc, Permissible, CommandBuilder, ArgumentBuilder> {
 
     private final TransformManager transformManager = new TransformManager();
 
     protected abstract CommandDispatcher<CommandSrc> dispatcher();
-
-    protected abstract CommandSource toSource(CommandSrc source);
 
     @Override
     public @NotNull TransformManager transformManager() {
@@ -29,8 +26,8 @@ public abstract class BrigadierCrossCommandManager<CommandSrc, CommandBuilder ex
     }
 
     @Override
-    public void register(@NotNull CrossCommand command, @NotNull String name, String... alias) {
-        if (!(command instanceof BrigadierCrossCommand brigCommand)) {
+    public void register(@NotNull CrossCommand<CommandSrc, Permissible> command, @NotNull String name, String... alias) {
+        if (!(command instanceof BrigadierCrossCommand<CommandSrc, Permissible> brigCommand)) {
             throw new IllegalArgumentException("Brigadier register requires a Brigadier command");
         }
         var dispatcher = dispatcher();

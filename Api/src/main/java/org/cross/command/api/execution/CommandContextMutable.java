@@ -1,9 +1,8 @@
 package org.cross.command.api.execution;
 
-import org.cross.command.api.source.CommandSource;
 import org.jetbrains.annotations.NotNull;
 
-public interface CommandContextMutable extends CommandContext {
+public interface CommandContextMutable<CommandSrc, Permissible> extends CommandContext<CommandSrc, Permissible> {
 
-    void setTarget(@NotNull CommandSource source);
+    void setTarget(@NotNull CommandSrc source);
 }

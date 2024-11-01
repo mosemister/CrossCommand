@@ -3,7 +3,6 @@ package org.cross.command.api;
 import org.cross.command.api.argument.CommandArgument;
 import org.cross.command.api.execution.CommandContextImmutable;
 import org.cross.command.api.execution.exception.CommandException;
-import org.cross.command.api.source.CommandSource;
 import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -11,23 +10,23 @@ import org.jetbrains.annotations.UnmodifiableView;
 import java.util.List;
 import java.util.Map;
 
-public interface CrossCommand {
+public interface CrossCommand<CommandSrc, Permissible> {
 
     @CheckReturnValue
-    boolean canRegister(@NotNull CommandSource source);
+    boolean canRegister(@NotNull CommandSrc source);
 
     @UnmodifiableView
     @CheckReturnValue
     @NotNull
-    List<Map.Entry<List<String>, CommandArgument<?>>> arguments();
+    List<Map.Entry<List<String>, CommandArgument<?, CommandSrc, Permissible>>> arguments();
 
-    void execute(@NotNull CommandContextImmutable context) throws CommandException, Throwable;
+    void execute(@NotNull CommandContextImmutable<CommandSrc, Permissible> context) throws CommandException, Throwable;
 
-    default CommandArgument<?> argument(int index) {
+    default CommandArgument<?, CommandSrc, Permissible> argument(int index) {
         return this.arguments().get(index).getValue();
     }
 
-    default CommandArgument<?> argument(@NotNull String key) {
+    default CommandArgument<?, CommandSrc, Permissible> argument(@NotNull String key) {
         return this
                 .arguments()
                 .stream()

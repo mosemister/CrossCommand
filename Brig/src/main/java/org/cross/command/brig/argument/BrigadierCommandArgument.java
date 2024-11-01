@@ -3,8 +3,8 @@ package org.cross.command.brig.argument;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import org.cross.command.api.argument.CommandArgument;
 
-public interface BrigadierCommandArgument<Src, Result> extends CommandArgument<Result> {
+public interface BrigadierCommandArgument<Result, CommandSrc, Permissible> extends CommandArgument<Result, CommandSrc, Permissible> {
 
-    ArgumentBuilder<Src, ? extends ArgumentBuilder<Src, ?>> buildBrigadier(String key);
+    ArgumentBuilder<CommandSrc, ? extends ArgumentBuilder<CommandSrc, ?>> buildBrigadier(String key);
 
 }

@@ -15,20 +15,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class IntegerCommandArgument<Src> implements BrigadierCommandArgument<Src, Integer> {
+public class IntegerCommandArgument<CommandSrc, Permissible> implements BrigadierCommandArgument<Integer, CommandSrc, Permissible> {
 
     private final int min;
     private final int max;
     private final boolean isOptional;
 
-    IntegerCommandArgument(IntegerCommandArgumentBuilder builder) {
+    IntegerCommandArgument(IntegerCommandArgumentBuilder<CommandSrc, Permissible> builder) {
         this.isOptional = builder.isOptional();
         this.min = builder.min();
         this.max = builder.max();
     }
 
     @Override
-    public @NotNull Integer process(@NotNull CommandContextMutable commandContext, @NotNull ArgumentContext context) throws ArgumentException {
+    public @NotNull Integer process(@NotNull CommandContextMutable<CommandSrc, Permissible> commandContext, @NotNull ArgumentContext context) throws ArgumentException {
         int parsed;
         try {
             parsed = context.parseInteger();
@@ -45,7 +45,7 @@ public class IntegerCommandArgument<Src> implements BrigadierCommandArgument<Src
     }
 
     @Override
-    public @NotNull Collection<ArgumentSuggestion> suggest(@NotNull CommandContextImmutable commandContext, @NotNull ArgumentContext context) {
+    public @NotNull Collection<ArgumentSuggestion> suggest(@NotNull CommandContextImmutable<CommandSrc, Permissible> commandContext, @NotNull ArgumentContext context) {
         return List.of();
     }
 
@@ -65,7 +65,7 @@ public class IntegerCommandArgument<Src> implements BrigadierCommandArgument<Src
     }
 
     @Override
-    public ArgumentBuilder<Src, ? extends ArgumentBuilder<Src, ?>> buildBrigadier(String key) {
+    public ArgumentBuilder<CommandSrc, ? extends ArgumentBuilder<CommandSrc, ?>> buildBrigadier(String key) {
         return RequiredArgumentBuilder.argument(key, IntegerArgumentType.integer(this.min, this.max));
     }
 }
