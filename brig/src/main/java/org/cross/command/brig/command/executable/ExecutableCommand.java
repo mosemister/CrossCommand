@@ -1,5 +1,6 @@
 package org.cross.command.brig.command.executable;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import org.cross.command.api.argument.CommandArgument;
@@ -28,7 +29,7 @@ public class ExecutableCommand<CommandSrc, Permissible> implements BrigadierCros
         this.arguments = builder
                 .arguments()
                 .stream()
-                .map(entry -> Map.<List<String>, CommandArgument<?, CommandSrc, Permissible>>entry(entry.getKey(), entry.getValue().build()))
+                .map(entry -> Map.<List<String>, CommandArgument<?, CommandSrc, Permissible>>entry(entry.getKey(), entry.getValue()))
                 .toList();
     }
 
@@ -63,6 +64,18 @@ public class ExecutableCommand<CommandSrc, Permissible> implements BrigadierCros
             previous.clear();
             previous.addAll(newArguments);
         }
+        builder.executes(commandContext -> {
+            var crossCommandContext = new TempCommandContextImmutable<>(commandContext, ExecutableCommand.this);
+            try {
+                ExecutableCommand.this.executor.execute(crossCommandContext);
+            } catch (CommandException e) {
+                System.err.println("Command Exception: " + e.getMessage());
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+
+            return Command.SINGLE_SUCCESS;
+        });
         return builder;
     }
 }

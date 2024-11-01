@@ -1,0 +1,49 @@
+import java.util.stream.Stream
+
+plugins {
+    id 'java'
+}
+
+group = 'org.test.plugin.paper'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    implementation project(":api")
+    implementation project(":brig")
+    implementation project(":paper")
+
+    implementation "io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT"
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    archiveFileName = "TestPlugin.jar"
+    var include = new String[]{"CrossCommand-", "brig-", "api-"}
+
+    var fat = configurations.runtimeClasspath.filter {
+        if (Stream.of(include).anyMatch(name -> it.name.startsWith(name))) {
+            logger.println("Including '" + it.name + "' with paper test plugin")
+            return true;
+        }
+        return false;
+    }.collect {
+        return it.isDirectory() ? it : zipTree(it)
+    }
+
+    from { fat }
+
+}

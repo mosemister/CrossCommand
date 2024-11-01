@@ -1,6 +1,7 @@
 package org.cross.command.paper;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
@@ -17,11 +18,6 @@ public class PaperCrossCommandManager extends BrigadierCrossCommandManager<Comma
     }
 
     @Override
-    protected CommandDispatcher<CommandSourceStack> dispatcher() {
-        return paperCommands.getDispatcher();
-    }
-
-    @Override
     public @NotNull PaperBaseCommandBuilder commandBuilder() {
         return new PaperBaseCommandBuilder(this);
     }
@@ -30,5 +26,10 @@ public class PaperCrossCommandManager extends BrigadierCrossCommandManager<Comma
     @NotNull
     public PaperArgumentBuilder argumentBuilder() {
         return new PaperArgumentBuilder();
+    }
+
+    @Override
+    protected void register(@NotNull String alias, @NotNull LiteralArgumentBuilder<CommandSourceStack> cmd) {
+        paperCommands.register(cmd.build(), alias);
     }
 }

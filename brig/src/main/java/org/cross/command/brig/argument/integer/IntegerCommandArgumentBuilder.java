@@ -13,7 +13,7 @@ public class IntegerCommandArgumentBuilder<CommandSrc, Permissible> implements C
     private int min = java.lang.Integer.MIN_VALUE;
 
     @Override
-    public Integer<CommandSrc, Permissible> setMax(@Nullable java.lang.Integer max) {
+    public IntegerCommandArgumentBuilder<CommandSrc, Permissible> setMax(@Nullable java.lang.Integer max) {
         this.max = Objects.requireNonNullElse(max, java.lang.Integer.MAX_VALUE);
         return this;
     }
@@ -24,7 +24,7 @@ public class IntegerCommandArgumentBuilder<CommandSrc, Permissible> implements C
     }
 
     @Override
-    public Integer<CommandSrc, Permissible> setMin(java.lang.Integer min) {
+    public IntegerCommandArgumentBuilder<CommandSrc, Permissible> setMin(java.lang.Integer min) {
         this.min = Objects.requireNonNullElse(min, java.lang.Integer.MIN_VALUE);
         return this;
     }

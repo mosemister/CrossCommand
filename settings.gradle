@@ -2,4 +2,6 @@ rootProject.name = 'CrossCommand'
 include 'brig'
 include 'api'
 include 'paper'
+include 'paper:testplugin'
+findProject(':paper:testplugin')?.name = 'testplugin'
 

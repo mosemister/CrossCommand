@@ -18,7 +18,7 @@ public abstract class BrigadierCrossCommandManager<CommandSrc, Permissible, Comm
 
     private final TransformManager transformManager = new TransformManager();
 
-    protected abstract CommandDispatcher<CommandSrc> dispatcher();
+    protected abstract void register(@NotNull String alias, @NotNull LiteralArgumentBuilder<CommandSrc> cmd);
 
     @Override
     public @NotNull TransformManager transformManager() {
@@ -30,13 +30,11 @@ public abstract class BrigadierCrossCommandManager<CommandSrc, Permissible, Comm
         if (!(command instanceof BrigadierCrossCommand<CommandSrc, Permissible> brigCommand)) {
             throw new IllegalArgumentException("Brigadier register requires a Brigadier command");
         }
-        var dispatcher = dispatcher();
         List<String> aliasList = new ArrayList<>(Arrays.asList(alias));
         aliasList.add(name);
         for (String singleAlias : aliasList) {
             var cmd = brigCommand.apply(LiteralArgumentBuilder.<CommandSrc>literal(singleAlias));
-            dispatcher.register(cmd);
-
+            register(singleAlias, cmd);
         }
     }
 

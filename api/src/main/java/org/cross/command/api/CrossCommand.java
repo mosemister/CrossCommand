@@ -36,4 +36,15 @@ public interface CrossCommand<CommandSrc, Permissible> {
                 .getValue();
     }
 
+    @NotNull
+    @UnmodifiableView
+    default List<String> argumentKeys(@NotNull CommandArgument<?, CommandSrc, Permissible> argument) {
+        return this
+                .arguments()
+                .stream()
+                .filter(entry -> entry.getValue().equals(argument))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("Unknown argument")).getKey();
+    }
+
 }

@@ -1,6 +1,6 @@
 package org.cross.command.api;
 
-import org.cross.command.api.argument.CommandArgumentBuilder;
+import org.cross.command.api.argument.CommandArgument;
 import org.cross.command.api.execution.CommandExecutor;
 import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.NotNull;
@@ -26,15 +26,15 @@ public interface CrossCommandBuilder<CommandSrc, Permissible> {
 
         @NotNull
         @CheckReturnValue
-        List<Map.Entry<List<String>, CommandArgumentBuilder<CommandSrc, Permissible>>> arguments();
+        List<Map.Entry<List<String>, CommandArgument<?, CommandSrc, Permissible>>> arguments();
 
         @NotNull
         @CheckReturnValue
-        CrossCommandBuilder<CommandSrc, Permissible> addArgument(@NotNull CommandArgumentBuilder<CommandSrc, Permissible> argument, @NotNull String name, @NotNull Collection<String> alias);
+        Executable<CommandSrc, Permissible> addArgument(@NotNull CommandArgument<?, CommandSrc, Permissible> argument, @NotNull String name, @NotNull Collection<String> alias);
 
         @NotNull
         @CheckReturnValue
-        default CrossCommandBuilder<CommandSrc, Permissible> addArgument(@NotNull CommandArgumentBuilder<CommandSrc, Permissible> argument, @NotNull String name, @NotNull String... alias) {
+        default Executable<CommandSrc, Permissible> addArgument(@NotNull CommandArgument<?, CommandSrc, Permissible> argument, @NotNull String name, @NotNull String... alias) {
             return addArgument(argument, name, List.of(alias));
         }
     }
