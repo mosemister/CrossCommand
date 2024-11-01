@@ -14,8 +14,8 @@ repositories {
 }
 
 dependencies {
-    implementation project(":Api")
-    implementation project(":Brig")
+    implementation project(":api")
+    implementation project(":brig")
 
     implementation "io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT"
 

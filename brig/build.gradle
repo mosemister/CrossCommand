@@ -13,9 +13,10 @@ repositories {
 }
 
 dependencies {
-    implementation project(":Api")
+    implementation project(':api')
     implementation "com.mojang:brigadier:1.0.18"
     implementation "net.kyori:adventure-api:4.17.0"
+    implementation 'org.jetbrains:annotations:24.0.0'
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
