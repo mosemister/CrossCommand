@@ -1,7 +1,7 @@
 package org.cross.command.api;
 
 import org.cross.command.api.argument.CommandArgument;
-import org.cross.command.api.execution.CommandContext;
+import org.cross.command.api.execution.CommandContextImmutable;
 import org.cross.command.api.execution.exception.CommandException;
 import org.cross.command.api.source.CommandSource;
 import org.jetbrains.annotations.CheckReturnValue;
@@ -21,7 +21,7 @@ public interface CrossCommand {
     @NotNull
     List<Map.Entry<List<String>, CommandArgument<?>>> arguments();
 
-    void execute(@NotNull CommandContext context) throws CommandException, Throwable;
+    void execute(@NotNull CommandContextImmutable context) throws CommandException, Throwable;
 
     default CommandArgument<?> argument(int index) {
         return this.arguments().get(index).getValue();

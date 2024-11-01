@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
-public interface CrossCommandManager {
+public interface CrossCommandManager<CommandBuilder extends CrossCommandBuilder.Base, ArgumentBuilder extends CommandArgumentBuilder.Base> {
 
     @NotNull
     @CheckReturnValue
@@ -15,15 +15,15 @@ public interface CrossCommandManager {
 
     @NotNull
     @CheckReturnValue
-    CrossCommandBuilder.Base commandBuilder();
+    CommandBuilder commandBuilder();
 
     @NotNull
     @CheckReturnValue
-    CommandArgumentBuilder.Base argumentBuilder();
+    ArgumentBuilder argumentBuilder();
 
     void register(@NotNull CrossCommand command, @NotNull String name, String... alias);
 
-    default void register(Function<CrossCommandBuilder, CrossCommandBuilder> commandBuilder, @NotNull String name, String... alias) {
+    default void register(Function<CommandBuilder, CrossCommandBuilder> commandBuilder, @NotNull String name, String... alias) {
         register(commandBuilder.apply(commandBuilder()).build(), name, alias);
     }
 }

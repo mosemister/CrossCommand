@@ -1,7 +1,5 @@
 package org.cross.command.paper.argument.component;
 
-import net.kyori.adventure.text.Component;
-import org.cross.command.api.argument.CommandArgument;
 import org.cross.command.api.argument.CommandArgumentBuilder;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +9,7 @@ public class ComponentCommandArgumentBuilder implements CommandArgumentBuilder {
 
     @Override
     public @NotNull ComponentCommandArgument build() {
-        return new ComponentCommandArgument();
+        return new ComponentCommandArgument(this);
     }
 
     @Override

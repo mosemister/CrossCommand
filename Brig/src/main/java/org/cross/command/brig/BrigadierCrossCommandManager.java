@@ -15,21 +15,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class BrigadierCrossCommandManager<CommandSrc> implements CrossCommandManager {
+public abstract class BrigadierCrossCommandManager<CommandSrc, CommandBuilder extends BaseCrossCommandBuilder, ArgumentBuilder extends BaseCommandArgumentBuilder<CommandSrc>> implements CrossCommandManager<CommandBuilder, ArgumentBuilder> {
 
     private final TransformManager transformManager = new TransformManager();
 
     protected abstract CommandDispatcher<CommandSrc> dispatcher();
 
     protected abstract CommandSource toSource(CommandSrc source);
-
-    @Override
-    @NotNull
-    public abstract BaseCommandArgumentBuilder<CommandSrc> argumentBuilder();
-
-    @Override
-    @NotNull
-    public abstract BaseCrossCommandBuilder commandBuilder();
 
     @Override
     public @NotNull TransformManager transformManager() {

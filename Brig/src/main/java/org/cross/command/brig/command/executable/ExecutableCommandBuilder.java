@@ -12,14 +12,22 @@ import java.util.Map;
 
 public class ExecutableCommandBuilder implements CrossCommandBuilder.Executable {
 
+    private CommandExecutor executor;
+
     @Override
     public @NotNull CrossCommand build() {
-        throw new RuntimeException("Not implemented yet");
+        return new ExecutableCommand<>(this);
     }
 
     @Override
     public @NotNull CrossCommandBuilder setExecutor(@NotNull CommandExecutor executor) {
-        throw new RuntimeException("Not implemented yet");
+        this.executor = executor;
+        return this;
+    }
+
+    @Override
+    public CommandExecutor executor() {
+        return this.executor;
     }
 
     @Override

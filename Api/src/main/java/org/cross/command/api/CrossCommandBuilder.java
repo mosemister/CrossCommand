@@ -21,6 +21,9 @@ public interface CrossCommandBuilder {
         @CheckReturnValue
         CrossCommandBuilder setExecutor(@NotNull CommandExecutor executor);
 
+        @CheckReturnValue
+        CommandExecutor executor();
+
         @NotNull
         @CheckReturnValue
         List<Map.Entry<List<String>, CommandArgumentBuilder>> arguments();
