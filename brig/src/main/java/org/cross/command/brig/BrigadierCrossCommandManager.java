@@ -1,6 +1,5 @@
 package org.cross.command.brig;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import org.cross.command.api.CrossCommand;
 import org.cross.command.api.CrossCommandManager;
@@ -8,6 +7,7 @@ import org.cross.command.api.transform.TransformManager;
 import org.cross.command.brig.argument.BaseCommandArgumentBuilder;
 import org.cross.command.brig.command.BaseCrossCommandBuilder;
 import org.cross.command.brig.command.BrigadierCrossCommand;
+import org.cross.command.brig.command.executable.ToCommandContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,6 +19,8 @@ public abstract class BrigadierCrossCommandManager<CommandSrc, Permissible, Comm
     private final TransformManager transformManager = new TransformManager();
 
     protected abstract void register(@NotNull String alias, @NotNull LiteralArgumentBuilder<CommandSrc> cmd);
+
+    public abstract ToCommandContext<CommandSrc, Permissible> toCommandContext();
 
     @Override
     public @NotNull TransformManager transformManager() {
@@ -33,8 +35,10 @@ public abstract class BrigadierCrossCommandManager<CommandSrc, Permissible, Comm
         List<String> aliasList = new ArrayList<>(Arrays.asList(alias));
         aliasList.add(name);
         for (String singleAlias : aliasList) {
-            var cmd = brigCommand.apply(LiteralArgumentBuilder.<CommandSrc>literal(singleAlias));
-            register(singleAlias, cmd);
+            var cmds = brigCommand.apply(LiteralArgumentBuilder.<CommandSrc>literal(singleAlias));
+            for (var cmd : cmds) {
+                register(singleAlias, cmd);
+            }
         }
     }
 

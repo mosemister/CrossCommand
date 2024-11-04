@@ -15,6 +15,11 @@ repositories {
     }
 }
 
+java {
+    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_21
+}
+
 dependencies {
     implementation project(":api")
     implementation project(":brig")

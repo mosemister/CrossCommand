@@ -30,6 +30,8 @@ public interface CommandContextImmutable<CommandSrc, Permissible> extends Comman
         audience().sendMessage(componentLike);
     }
 
+    @NotNull
+    @CheckReturnValue
     CrossCommand<CommandSrc, Permissible> command();
 
     @NotNull
@@ -40,7 +42,11 @@ public interface CommandContextImmutable<CommandSrc, Permissible> extends Comman
     @SuppressWarnings("unchecked")
     @UnknownNullability
     default <T> T argumentResult(@NotNull String argumentId) {
-        return (T) argumentResults().stream().filter(entry -> entry.getKey().equals(argumentId)).findAny().orElseThrow(() -> new IllegalArgumentException("No argument with id of '" + argumentId + "' found"));
+        return (T) argumentResults()
+                .stream()
+                .filter(entry -> entry.getKey().equals(argumentId))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("No argument with id of '" + argumentId + "' found"));
     }
 
     @UnknownNullability

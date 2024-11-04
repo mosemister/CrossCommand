@@ -12,6 +12,10 @@ repositories {
     }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
 dependencies {
     implementation project(':api')
     implementation "com.mojang:brigadier:1.0.18"

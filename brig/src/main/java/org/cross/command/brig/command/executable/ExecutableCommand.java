@@ -13,9 +13,8 @@ import org.cross.command.brig.command.BrigadierCrossCommand;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class ExecutableCommand<CommandSrc, Permissible> implements BrigadierCrossCommand<CommandSrc, Permissible> {
 
@@ -49,33 +48,53 @@ public class ExecutableCommand<CommandSrc, Permissible> implements BrigadierCros
     }
 
     @Override
-    public LiteralArgumentBuilder<CommandSrc> apply(LiteralArgumentBuilder<CommandSrc> builder) {
+    public Collection<LiteralArgumentBuilder<CommandSrc>> apply(LiteralArgumentBuilder<CommandSrc> builder) {
         var arguments = this.arguments();
         List<ArgumentBuilder<CommandSrc, ?>> previous = new ArrayList<>();
-        for (int i = arguments.size() - 1; i > 0; i--) {
-            var entry = arguments.get(i);
+        for (int i = arguments.size() - 1; i >= 0; i--) {
+            Map.Entry<List<String>, CommandArgument<?, CommandSrc, Permissible>> entry = arguments.get(i);
             var argument = (BrigadierCommandArgument<?, CommandSrc, Permissible>) entry.getValue();
             var newArguments = entry
                     .getKey()
                     .stream()
                     .map(argument::buildBrigadier)
-                    .peek(newBuilder -> previous.forEach(newBuilder::then))
+                    .toList();
+
+            var appliedNewArguments = newArguments
+                    .stream()
+                    .flatMap(argumentBuilder -> {
+                        if (previous.isEmpty()) {
+                            return Stream.of(argumentBuilder);
+                        }
+                        return previous
+                                .stream()
+                                .map(argumentBuilder::then);
+                    })
                     .toList();
             previous.clear();
-            previous.addAll(newArguments);
+            previous.addAll(appliedNewArguments);
         }
-        builder.executes(commandContext -> {
-            var crossCommandContext = new TempCommandContextImmutable<>(commandContext, ExecutableCommand.this);
+        if (previous.isEmpty()) {
+            return Collections.singletonList(builder.executes(buildCommand()));
+        }
+        final var finalBuilder = builder;
+        return previous.stream().map(t -> finalBuilder.then(t).executes(buildCommand())).toList();
+    }
+
+    private Command<CommandSrc> buildCommand() {
+        return commandContext -> {
+
+            var immutableContext = commandManager.toCommandContext().toContext(commandContext, ExecutableCommand.this);
             try {
-                ExecutableCommand.this.executor.execute(crossCommandContext);
+                ExecutableCommand.this.executor.execute(immutableContext);
             } catch (CommandException e) {
                 System.err.println("Command Exception: " + e.getMessage());
             } catch (Throwable e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
+                return 0;
             }
 
             return Command.SINGLE_SUCCESS;
-        });
-        return builder;
+        };
     }
 }
